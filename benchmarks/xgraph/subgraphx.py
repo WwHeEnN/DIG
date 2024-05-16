@@ -8,7 +8,7 @@ from benchmarks.xgraph.utils import check_dir, fix_random_seed, Recorder
 from benchmarks.xgraph.gnnNets import get_gnnNets
 from benchmarks.xgraph.dataset import get_dataset, get_dataloader
 
-from dig.xgraph.method import SubgraphX
+from digg.xgraph.method import SubgraphX
 from dig.xgraph.dataset import SynGraphDataset
 from dig.xgraph.method.subgraphx import PlotUtils
 from dig.xgraph.evaluation import XCollector
