@@ -5,9 +5,14 @@ import shutil
 import warnings
 from torch.optim import Adam
 from omegaconf import OmegaConf
-from benchmarks.xgraph.utils import check_dir
-from benchmarks.xgraph.gnnNets import get_gnnNets
-from benchmarks.xgraph.dataset import get_dataset, get_dataloader
+# from benchmarks.xgraph.utils import check_dir
+# from benchmarks.xgraph.gnnNets import get_gnnNets
+# from benchmarks.xgraph.dataset import get_dataset, get_dataloader
+import os 
+print(os.getcwd())
+from utils import check_dir
+from gnnNets import get_gnnNets
+from dataset import get_dataset, get_dataloader
 import torch.nn.functional as F
 from torch.optim.lr_scheduler import MultiStepLR
 from utils import fix_random_seed
@@ -242,3 +247,4 @@ def main(config):
 
 if __name__ == '__main__':
     main()
+

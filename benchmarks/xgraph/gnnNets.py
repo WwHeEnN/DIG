@@ -8,12 +8,17 @@ from torch_geometric.nn.conv.gcn_conv import gcn_norm
 from torch_geometric.nn.conv import GCNConv
 from torch_geometric.nn.glob import global_mean_pool, global_add_pool, global_max_pool
 from torch import Tensor
-from torch_sparse import SparseTensor, fill_diag
+# from torch_sparse import SparseTensor, fill_diag
 from torch_geometric.typing import Adj, OptTensor, Size
 from torch_geometric.utils import add_self_loops
-from dig.xgraph.models import GNNPool
+# from dig.xgraph.models import GNNPool #bw commented 
+
 from collections import OrderedDict
 
+# bw added GNNPool
+class GNNPool(nn.Module):
+    def __init__(self):
+        super().__init__()
 
 def get_gnnNets(input_dim, output_dim, model_config):
     if model_config.gnn_name.lower() == 'gcn':
@@ -152,17 +157,17 @@ class GCNConv(GCNConv):
                         self._cached_edge_index = (edge_index, edge_weight)
                 else:
                     edge_index, edge_weight = cache[0], cache[1]
-
-            elif isinstance(edge_index, SparseTensor):
-                cache = self._cached_adj_t
-                if cache is None:
-                    edge_index = gcn_norm(
-                        edge_index, edge_weight, x.size(self.node_dim),
-                        self.improved, self.add_self_loops, dtype=x.dtype)
-                    if self.cached:
-                        self._cached_adj_t = edge_index
-                else:
-                    edge_index = cache
+            # bw commented 
+            # elif isinstance(edge_index, SparseTensor):
+            #     cache = self._cached_adj_t
+            #     if cache is None:
+            #         edge_index = gcn_norm(
+            #             edge_index, edge_weight, x.size(self.node_dim),
+            #             self.improved, self.add_self_loops, dtype=x.dtype)
+            #         if self.cached:
+            #             self._cached_adj_t = edge_index
+            #     else:
+            #         edge_index = cache
 
         # new
         elif not self.normalize:
@@ -179,17 +184,18 @@ class GCNConv(GCNConv):
                 else:
                     edge_index, edge_weight = cache[0], cache[1]
 
-            elif isinstance(edge_index, SparseTensor):
-                cache = self._cached_adj_t
-                if cache is None:
-                    adj_t = edge_index
-                    if not adj_t.has_value():
-                        adj_t = adj_t.fill_value(1.)
-                    if self.add_self_loops:
-                        adj_t = fill_diag(adj_t, 1.)
-                    edge_index = adj_t
-                    if self.cached:
-                        self._cached_adj_t = edge_index
+            # bw commented
+            # elif isinstance(edge_index, SparseTensor):
+            #     cache = self._cached_adj_t
+            #     if cache is None:
+            #         adj_t = edge_index
+            #         if not adj_t.has_value():
+            #             adj_t = adj_t.fill_value(1.)
+            #         if self.add_self_loops:
+            #             adj_t = fill_diag(adj_t, 1.)
+            #         edge_index = adj_t
+            #         if self.cached:
+            #             self._cached_adj_t = edge_index
 
         # --- add require_grad ---
         edge_weight.requires_grad_(True)
@@ -212,7 +218,8 @@ class GCNConv(GCNConv):
         size = self.__check_input__(edge_index, size)
 
         # Run "fused" message and aggregation (if applicable).
-        if (isinstance(edge_index, SparseTensor) and self.fuse
+        # if (isinstance(edge_index, SparseTensor) and self.fuse #bw
+        if (isinstance(edge_index, None) and self.fuse     #bw
                 and not self._explain):
             coll_dict = self.__collect__(self.__fused_user_args__, edge_index,
                                          size, kwargs)

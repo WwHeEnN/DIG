@@ -1,7 +1,13 @@
 import torch
 from torch.utils.data import random_split, Subset
 from torch_geometric.data import DataLoader
-from dig.xgraph.dataset import MoleculeDataset, SynGraphDataset, SentiGraphDataset, BA_LRP
+
+import os 
+print(os.getcwd())
+# !pip install dig 
+# import dig 
+# from digg.xgraph.dataset import MoleculeDataset, SynGraphDataset, SentiGraphDataset, BA_LRP # bw commented 
+from digg.xgraph.dataset import MoleculeDataset, SynGraphDataset, SentiGraphDataset, BA_LRP
 from torch import default_generator
 
 
